@@ -4,46 +4,38 @@ import SwipeableContainer from "../components/SwipeableContainer";
 import HomeScreen from "./HomeScreen";
 
 const SettingScreen = props => {
-  if (props.renderMock) {
-    return (
-      <View style={{ height: "100%" }}>
-        <View style={styles.screen}>
-          <Text style={{ color: "white" }}>Setting Screen</Text>
-          <Button
-            title="Go to Home"
-            onPress={() => {
-              props.navigation.navigate("Home");
-            }}
-          />
-        </View>
+  let content = (
+    <View style={{ height: "100%" }}>
+      <View style={styles.screen}>
+        <Text style={{ color: "white" }}>Setting Screen</Text>
+        <Button
+          title="Go to Home"
+          onPress={() => {
+            props.navigation.navigate("Home");
+          }}
+        />
       </View>
+    </View>
+  );
+
+  if (!props.renderMock) {
+    content = (
+      <SwipeableContainer
+        navigation={props.navigation}
+        navigateTo="Home"
+        swipeNavigation={{
+          right: {
+            pageName: "Home",
+            pageComp: HomeScreen,
+          },
+        }}
+      >
+        {content}
+      </SwipeableContainer>
     );
   }
 
-  return (
-    <SwipeableContainer
-      navigation={props.navigation}
-      navigateTo="Home"
-      swipeNavigation={{
-        right: {
-          pageName: "Home",
-          pageComp: HomeScreen,
-        },
-      }}
-    >
-      <View style={{ height: "100%" }}>
-        <View style={styles.screen}>
-          <Text style={{ color: "white" }}>Setting Screen</Text>
-          <Button
-            title="Go to Home"
-            onPress={() => {
-              props.navigation.navigate("Home");
-            }}
-          />
-        </View>
-      </View>
-    </SwipeableContainer>
-  );
+  return content;
 };
 
 const styles = StyleSheet.create({
